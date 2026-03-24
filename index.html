@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Kazus</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  
+  <main class="main-view">
+    <div id="canvas-wrapper">
+      <canvas id="canvas"></canvas>
+    </div>
+  </main>
+
+  <aside class="sidebar" id="sidebar">
+    <h1 class="logo">Казус</h1>
+    
+    <div>
+      <button class="btn-main" onclick="document.getElementById('upload').click()">Выбрать изображение</button>
+      <input type="file" id="upload" accept="image/*" style="display:none">
+    </div>
+
+    <div>
+      <button class="btn-main" id="reset-btn">Сброс</button>
+    </div>
+
+    <details open>
+      <summary>Градационные преобразования</summary>
+      <div class="group-content">
+        <label class="control-row">
+          <input type="checkbox" id="grayscale-check">
+          <span class="label-text">Серость</span>
+        </label>
+
+        <label class="control-row">
+          <input type="checkbox" id="negative-check">
+          <span class="label-text">Негатив</span>
+        </label>
+        
+        <div class="control-block">
+          <label class="control-row">
+            <input type="checkbox" id="threshold-active">
+            <span class="label-text">Пороговое преобразование</span>
+          </label>
+          <input type="range" id="threshold" min="1" max="255" value="128">
+        </div>
+
+        <div class="control-block">
+          <label class="control-row">
+            <input type="checkbox" id="power-law-transform-active">
+            <span class="label-text">Степенное преобразование</span>
+          </label>
+          <input type="range" id="power-law" min="0.01" max="5.0" step="0.1" value="2.5">
+        </div>
+
+        <div class="control-block">
+          <label class="control-row">
+            <input type="checkbox" id="log-transform-active">
+            <span class="label-text">Логарифмическое преобразование</span>
+          </label>
+          <input type="range" id="log-gain" min="1" max="5.0" step="0.1" value="2.5">
+        </div>
+      </div>
+    </details>
+
+    <details>
+      <summary>Другие эффекты</summary>
+      <div class="group-content">
+        <div class="control-block">
+          <label class="control-row">
+            <input type="checkbox" id="quantization-transform-active">
+            <span class="label-text">Квантование цвета</span>
+          </label>
+          <input type="range" id="quant-steps" min="1" max="32" step="1" value="16">
+        </div>
+
+        <div class="control-block">
+          <label class="control-row">
+            <input type="checkbox" id="solarisation-transform-active">
+            <span class="label-text">Соляризация</span>
+          </label>
+          <input type="range" id="solar-threshold" min="1" max="255" step="1" value="128">
+        </div>
+
+        <div class="control-block">
+          <label class="control-row">
+            <input type="checkbox" id="pixelate-transform-active">
+            <span class="label-text">Пикселизация</span>
+          </label>
+          <input type="range" id="pixel-size" min="1" max="24" step="1" value="4">
+        </div>
+
+        <div class="control-block">
+          <label class="control-row">
+            <input type="checkbox" id="hue-rotate-active">
+            <span class="label-text">HUERotate</span>
+          </label>
+          <input type="range" id="hue-angle" min="1" max="180" step="1" value="90">
+        </div>
+
+
+        <label class="control-row">
+            <input type="checkbox" id="dithering-check">
+            <span class="label-text">Dithering</span>
+        </label>
+
+        <div class="control-block">
+          <label class="control-row">
+            <input type="checkbox" id="scanlines-check">
+            <span class="label-text">TV-эффет</span>
+          </label>
+        </div>
+      </div>
+    </details>
+
+    <details>
+      <summary>Шумы и искажения</summary>
+      <div class="group-content">
+
+        <div class="control-block">
+          <label class="control-row">
+            <input type="checkbox" id="salt-pepper-prob-active">
+            <span class="label-text">Соль и перец</span>
+          </label>
+          <input type="range" id="salt-pepper-prob" min="0" max="1" step="0.01" value="0.02">
+        </div>
+
+        <div class="control-block">
+          <label class="control-row">
+            <input type="checkbox" id="film-grain-active">
+            <span class="label-text">Плёночное зерно</span>
+          </label>
+          <input type="range" id="grain-amount" min="0" max="50" step="1" value="15">
+        </div>
+      </div>
+    </details>
+  </aside>
+  <script src="script.js"></script>
+</body>
+</html>
