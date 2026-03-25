@@ -1,4 +1,7 @@
-const { app, BrowserWindow, Menu } = require('electron');
+const { app, BrowserWindow, Menu, clipboard, nativeImage, dialog } = require('electron');
+const path = require('path');
+const fs = require('fs');
+const { randomUUID } = require('crypto');
 
 function createWindow() {
   Menu.setApplicationMenu(null);
@@ -7,8 +10,53 @@ function createWindow() {
     width: 1000,
     height: 800,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false
+      nodeIntegration: false,
+      contextIsolation: true,
+      preload: path.join(__dirname, 'preload.js')
+    }
+  });
+
+  // Контекстное меню
+  win.webContents.on('context-menu', (event, params) => {
+    // Проверяем, что клик был по canvas
+    if (params.mediaType === 'canvas' || params.selectionMenu) {
+      const template = [
+        {
+          label: 'Копировать изображение',
+          click: () => {
+            win.webContents.executeJavaScript(`
+              document.querySelector('canvas').toBlob(blob => {
+                navigator.clipboard.write([
+                  new ClipboardItem({ 'image/png': blob })
+                ]);
+              }, 'image/png');
+            `);
+          }
+        },
+        {
+          label: 'Сохранить как...',
+          click: async () => {
+            const dataUrl = await win.webContents.executeJavaScript(`
+              document.querySelector('canvas').toDataURL('image/png');
+            `);
+            
+            const buffer = Buffer.from(dataUrl.split(',')[1], 'base64');
+            
+            const result = await dialog.showSaveDialog(win, {
+              title: 'Сохранить изображение',
+              defaultPath: randomUUID() + '.png',
+              filters: [{ name: 'PNG', extensions: ['png'] }]
+            });
+
+            if (!result.canceled && result.filePath) {
+              fs.writeFileSync(result.filePath, buffer);
+            }
+          }
+        }
+      ];
+
+      const menu = Menu.buildFromTemplate(template);
+      menu.popup({ window: win });
     }
   });
 

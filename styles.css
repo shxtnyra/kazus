@@ -123,6 +123,12 @@ details[open] summary::before { content: "▲ "; }
   gap: 5px;
 }
 
+.sub-constrols {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
 .label-text { font-size: 14px; color: var(--text-dim); }
 
 input[type="checkbox"] {
