@@ -168,11 +168,13 @@ const filters = {
     }
   },
 
-  filmGrain(data, params) {
+  filmgrain(data, params) {
     const amount = params.grainAmount || 15;
-    const noise = (Math.random() - 0.5) * amount;
     
     for (let i = 0; i < data.length; i += 4) {
+      // Один шум для всех каналов (монохромное зерно)
+      const noise = (Math.random() - 0.5) * amount;
+      
       data[i]     = Math.max(0, Math.min(255, data[i] + noise));
       data[i+1]   = Math.max(0, Math.min(255, data[i+1] + noise));
       data[i+2]   = Math.max(0, Math.min(255, data[i+2] + noise));

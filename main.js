@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, clipboard, nativeImage, dialog } = require('electron');
+const { app, BrowserWindow, Menu, clipboard, nativeImage, dialog, nativeTheme } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const { randomUUID } = require('crypto');
@@ -6,15 +6,27 @@ const { randomUUID } = require('crypto');
 function createWindow() {
   Menu.setApplicationMenu(null);
 
+  nativeTheme.themeSource = 'dark'
+
   const win = new BrowserWindow({
     width: 1000,
     height: 800,
+    minWidth: 700,
+    minHeight: 500,
+    icon: path.join(__dirname, 'icons/icon-256.ico'),
+    center: true,
+    backgroundColor: '#312450',
+    show: false,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
-      preload: path.join(__dirname, 'preload.js')
+      forcedColors: 'none',
     }
   });
+
+  win.once('ready-to-show', () => {
+    win.show();
+  })
 
   // Контекстное меню
   win.webContents.on('context-menu', (event, params) => {
